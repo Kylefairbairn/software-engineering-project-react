@@ -1,6 +1,7 @@
 import axios from "axios";
-const BASE_URL = "https://software-engineering-node-fse.herokuapp.com"
-// const BASE_URL = "http://localhost:4000"
+// TODO: Add Heroku url
+// const BASE_URL = ""
+const BASE_URL = "http://localhost:4000"
 
 const LOGIN_API = `${BASE_URL}/api/login`;
 const USERS_API = `${BASE_URL}/api/users`;
