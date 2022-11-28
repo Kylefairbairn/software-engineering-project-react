@@ -11,19 +11,28 @@ const Messages = () => {
     useEffect(findGroups, [])
   return(
       <div className={'pt-2'}>
-        <div className={'ps-2 row'}>
-          <div className={'col'}>
-            <h3>Messages</h3>
+          <div className={'ps-2 row'}>
+              <div className={'col-5'}>
+                  <h3>Messages</h3>
+              </div>
+              <div className={'col'}>
+                  <div className="input-group">
+                      <input type="text" className="form-control" placeholder="Search for User in Groups"
+                             aria-label="Recipient's username" aria-describedby="basic-addon2"/>
+                      <div className="input-group-append">
+                        <button className="btn btn-outline-secondary" type="button">Search</button>
+                      </div>
+                  </div>
+              </div>
           </div>
-          <div className={'col'}>
-            <button className={'btn btn-primary float-end'}>
-              Create Group
-            </button>
+          <div className={'pt-2'}>
+              <GroupsList groups={groups}/>
           </div>
-        </div>
-        <div className={'pt-2'}>
-            <GroupsList groups={groups}/>
-        </div>
+          <div className={'pt-2'}>
+              <button className={'btn btn-primary float-end'}>
+                  Create Group
+              </button>
+          </div>
       </div>
   );
 };
