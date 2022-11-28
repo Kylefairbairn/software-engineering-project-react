@@ -1,12 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import GroupsList from "../groups";
+import * as service from "../../services/groups-service";
 
 
 const Messages = () => {
     const [groups, setGroups] = useState([])
-    const findGroups = () => {
-
-    }
+    const findGroups = () =>
+        service.findGroupsForUser('633c41de89045f21193ea004')
+            .then(groups => setGroups(groups))
+    useEffect(findGroups, [])
   return(
       <div className={'pt-2'}>
         <div className={'ps-2 row'}>
@@ -19,7 +21,7 @@ const Messages = () => {
             </button>
           </div>
         </div>
-        <div className={'border border-dark'}>
+        <div className={'pt-2'}>
             <GroupsList groups={groups}/>
         </div>
       </div>
