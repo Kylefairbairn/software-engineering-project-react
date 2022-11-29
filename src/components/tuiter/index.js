@@ -12,7 +12,6 @@ import Notifications from "../notifications";
 import Messages from "../messages";
 import Lists from "../lists";
 import More from "../more";
-import creategroup from "../messages/create-group";
 import {Login} from "../profile/login";
 import CreateGroup from "../create";
 
@@ -35,8 +34,7 @@ function Tuiter () {
               <Route path="/explore" element={<Explore/>}/>
               <Route path="/notifications" element={<Notifications/>}/>
               <Route path="/messages" element={<Messages/>}/>
-              <Route path="/messages/createGroup" element={<creategroup/>}/>
-              <Route path="/create" element={<CreateGroup/>}/>
+              <Route path="messages/create" element={<CreateGroup/>}/>
               <Route path="/bookmarks" element={<Bookmarks/>}/>
               <Route path="/lists" element={<Lists/>}/>
               <Route path="/profile" element={<Profile/>}/>
