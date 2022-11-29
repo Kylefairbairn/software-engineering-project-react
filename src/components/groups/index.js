@@ -10,8 +10,8 @@ const GroupsList = (
         <>
             <ul className={'list-group'}>
                 {
-                    groups.map && groups.map(group =>
-                               <GroupItem group={group}/>)
+                    groups && groups.map(group =>
+                               <GroupItem key={group._id} group={group}/>)
                 }
             </ul>
         </>

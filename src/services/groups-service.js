@@ -52,7 +52,7 @@ export const findGroupByGroupId = (gid) =>
  * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
  */
 export const findAllCommonGroups = (uid, ouid) =>
-    axios.get(`${BASE_URL}/${uid}/common/${ouid}`)
+    axios.get(`${GROUPS_API}/${uid}/common/${ouid}`)
         .then(response => response.data)
 /**
  * Update Group
