@@ -14,20 +14,14 @@ const CreateGroup = () => {
     const [form, setForm] = useState({
         formMembers: [], formDate: '', formAdmin: '', formGroupName: '', formDescription: ''
     })
-    //const [form, setForm] = useState({})
     const [errors, setErrors] = useState({})
-    const [groupCreator, setGroupCreator] = useState({})
-    const [members, setMembers] = useState({})
-    const [admin, setAdmins] = useState({})
-
-
-
 
     const handleAddMembers = (e) => {
         const newMembers = e.target.value
 
-        console.log(newMembers)
         //form.formMembers = form.formMembers.push(newMembers)
+
+
 
         const newForm = {
 
@@ -137,7 +131,8 @@ const CreateGroup = () => {
                     id="membersList"
                     placeholder="Members"
                     // onChange={(e) => setField(form.formMembers, e.target.value)}
-                    onChange={setFormMembers}
+                    //onChange={setFormMembers}
+                    onChange={(e) => setForm({...form, formMembers: e.target.value})}
                 />
             </div>
 
