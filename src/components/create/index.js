@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Form, FormControl} from "react-bootstrap";
 
+
 const CreateGroup = () => {
 
     // error handling
@@ -10,121 +11,42 @@ const CreateGroup = () => {
     // connection to group service
         // user id is needed but pretty sure group object is complete
 
+    // members are usernames to ensure uniqueness
 
     const [form, setForm] = useState({
         formMembers: [], formDate: '', formAdmin: '', formGroupName: '', formDescription: ''
     })
+    const [members, setMembers] = useState({})
+
     const [errors, setErrors] = useState({})
 
+
     const handleAddMembers = (e) => {
-        const newMembers = e.target.value
+        // if form.formembers is a valid user
 
-        //form.formMembers = form.formMembers.push(newMembers)
+        e.preventDefault();
+
+        const newMember = form.formMembers
 
 
 
-        const newForm = {
-
-            formMembers: form.formMembers,
-            formDate: form.formDate,
-            formAdmin: form.formAdmin,
-            formGroupName: form.formGroupName,
-            formDescription: form.formDescription
-        }
-
-        setForm(newForm)
-
+        // setMembers({...members, username: newMember})
     }
+
 
     const handleCreateGroup = () => {
         console.log(form)
+
+        // if none of the elements are empty and the username is found within the database
+        // get users id from user serivce and then create the group object
     }
 
-
-    const setFormMembers = (e) => {
-        const newMembers = e.target.value
-
-        const newForm = {
-
-            formMembers: newMembers,
-            formDate: form.formDate,
-            formAdmin: form.formAdmin,
-            formGroupName: form.formGroupName,
-            formDescription: form.formDescription
-        }
-
-        setForm(newForm)
-    }
-
-    const setFormDate = (e) => {
-
-        const newDate = e.target.value
-
-        const newForm = {
-
-            formMembers: form.formMembers,
-            formDate: newDate,
-            formAdmin: form.formAdmin,
-            formGroupName: form.formGroupName,
-            formDescription: form.formDescription
-        }
-
-        setForm(newForm)
-    }
-
-    const setFormAdmin = (e) => {
-
-        const newAdmin = e.target.value
-
-        const newForm = {
-
-            formMembers: form.formMembers,
-            formDate: form.formDate,
-            formAdmin: newAdmin,
-            formGroupName: form.formGroupName,
-            formDescription: form.formDescription
-        }
-
-        setForm(newForm)
-    }
-
-    const setFormGroupName = (e) => {
-
-        const newGroupName = e.target.value
-
-        const newForm = {
-
-            formMembers: form.formMembers,
-            formDate: form.formDate,
-            formAdmin: form.formAdmin,
-            formGroupName: newGroupName,
-            formDescription: form.formDescription
-        }
-
-        setForm(newForm)
-    }
-
-    const setFormDescription = (e) => {
-
-        const newDescription = e.target.value
-
-        const newForm = {
-
-            formMembers: form.formMembers,
-            formDate: form.formDate,
-            formAdmin: form.formAdmin,
-            formGroupName: form.formGroupName,
-            formDescription: newDescription
-        }
-
-        setForm(newForm)
-    }
 
     return(
         <Form>
 
             <div className="form-group">
-                <label htmlFor="membersList">Members</label>
+                <label htmlFor="membersList">Members User Name</label>
                 <input
                     type="text"
                     className="form-control"
@@ -132,6 +54,7 @@ const CreateGroup = () => {
                     placeholder="Members"
                     // onChange={(e) => setField(form.formMembers, e.target.value)}
                     //onChange={setFormMembers}
+                    value = {form.formMembers}
                     onChange={(e) => setForm({...form, formMembers: e.target.value})}
                 />
             </div>
@@ -144,19 +67,21 @@ const CreateGroup = () => {
                     id="date"
                     placeholder="date"
                     //onChange={(e) => setField(form.formDate, e.target.value)}
-                    onChange={setFormDate}
+                    //onChange={setFormDate}
+                    onChange = {(e) => setForm({...form, formDate: e.target.value})}
                 />
             </div>
 
             <div className="form-group">
-                <label htmlFor="admin">Admin</label>
+                <label htmlFor="admin">Admins User Name</label>
                 <input
                     type="text"
                     className="form-control"
                     id="Admin"
                     placeholder="admin"
                     //onChange={(e) => setField(form.formAdmin, e.target.value)}
-                    onChange={setFormAdmin}
+                    //onChange={setFormAdmin}
+                    onChange = {(e) => setForm({...form, formAdmin: e.target.value})}
                 />
             </div>
 
@@ -168,7 +93,8 @@ const CreateGroup = () => {
                     id="groupName"
                     placeholder="Group name"
                     //onChange={(e) => setField(form.formGroupName, e.target.value)}
-                    onChange={setFormGroupName}
+                    //onChange={setFormGroupName}
+                    onChange = {(e) => setForm({...form, formAdmin: e.target.value})}
                 />
             </div>
 
@@ -179,7 +105,8 @@ const CreateGroup = () => {
                     id = "Description"
                     placeholder= "Ex CS5500 study group"
                     //onChange={(e) => setField(form.formDescription, e.target.value)}
-                    onChange={setFormDescription}
+                    //onChange={setFormDescription}
+                    onChange = {(e) => setForm({...form, formDescription: e.target.value})}
                     rows="3">
                 </textarea>
             </div>
