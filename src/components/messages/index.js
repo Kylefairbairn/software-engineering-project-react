@@ -23,7 +23,7 @@ const Messages = () => {
               </div>
               <div className={'col'}>
                   <div className="input-group">
-                      <input id={'search-bar'} type="text" className="form-control" placeholder="Search for User in Groups"
+                      <input id={'search-bar'} type="text" className="form-control" placeholder="Recipient's username"
                              aria-label="Recipient's username" aria-describedby="basic-addon2"
                              onChange={(e) => setOuid(e.target.value)}/>
                       <div className="input-group-append">
