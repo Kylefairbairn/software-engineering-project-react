@@ -17,7 +17,7 @@ export const findUserById = (uid) =>
     .then(response => response.data);
 
 export const findUserByUsername = (username) =>
-    axios.get(`${USERS_API}/${username}`)
+    axios.get(`${USERS_API}/name/${username}`)
         .then(response => response.data)
 
 export const deleteUser = (uid) =>
