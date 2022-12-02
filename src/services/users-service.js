@@ -16,6 +16,10 @@ export const findUserById = (uid) =>
   axios.get(`${USERS_API}/${uid}`)
     .then(response => response.data);
 
+export const findUserByUsername = (username) =>
+    axios.get(`${USERS_API}/${username}`)
+        .then(response => response.data)
+
 export const deleteUser = (uid) =>
   axios.delete(`${USERS_API}/${uid}`)
     .then(response => response.data);
