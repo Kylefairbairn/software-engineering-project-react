@@ -15,9 +15,11 @@ const CreateGroup = () => {
     // members are usernames to ensure uniqueness
 
     const [form, setForm] = useState({
-        username: '', formDate: '', formAdmin: [], formGroupName: '', formDescription: ''
+        username: '', formDate: '', formAdmin: '', formGroupName: '', formDescription: ''
     })
     const [members, setMembers] = useState([])
+
+    const [admins, setAdmins] = useState([])
 
 
     const [errors, setErrors] = useState({
@@ -28,32 +30,20 @@ const CreateGroup = () => {
 
         e.preventDefault();
 
-        // current user that is typed inside of text box
         const newMember = {...form}
-
-        // const updatedMembers = [...members,newMember]
-        // setMembers(updatedMembers)
-        // console.log(members)
-        //setForm({...form, username: newMember})
 
         setMembers([...members,newMember])
 
-        console.log(members)
 
+    }
 
+    const handleAddAdmin = (e) => {
+        e.preventDefault()
 
+        const newAdmin = {...form}
 
-        // create a new form doesnt work currently
+        setAdmins([...admins, newAdmin])
 
-        // const newForm = {
-        //     formMembers: members,
-        //     formDate: form.formDate,
-        //     formAdmin: form.formAdmin,
-        //     formGroupName: form.formGroupName,
-        //     formDescription: form.formDescription
-        // }
-
-        // setForm(newForm)
 
     }
 
@@ -88,7 +78,6 @@ const CreateGroup = () => {
                     className="form-control"
                     id="date"
                     placeholder="date"
-                    //onChange={setFormDate}
                     onChange = {(e) => setForm({...form, formDate: e.target.value})}
                 />
             </div>
@@ -100,7 +89,6 @@ const CreateGroup = () => {
                     className="form-control"
                     id="Admin"
                     placeholder="admin"
-                    //onChange={setFormAdmin}
                     onChange = {(e) => setForm({...form, formAdmin: e.target.value})}
                 />
             </div>
@@ -112,8 +100,6 @@ const CreateGroup = () => {
                     className="form-control"
                     id="groupName"
                     placeholder="Group name"
-                    //onChange={(e) => setField(form.formGroupName, e.target.value)}
-                    //onChange={setFormGroupName}
                     onChange = {(e) => setForm({...form, formGroupName: e.target.value})}
                 />
             </div>
@@ -124,8 +110,6 @@ const CreateGroup = () => {
                     className="form-control"
                     id = "Description"
                     placeholder= "Ex CS5500 study group"
-                    //onChange={(e) => setField(form.formDescription, e.target.value)}
-                    //onChange={setFormDescription}
                     onChange = {(e) => setForm({...form, formDescription: e.target.value})}
                     rows="3">
                 </textarea>
@@ -146,13 +130,17 @@ const CreateGroup = () => {
                 >Add Member
                 </button>
 
-                <button type="button" className=" btn btn-primary btn-lg active">Add Admin</button>
+                <button type="button"
+                        className=" btn btn-primary btn-lg active"
+                        onClick={handleAddAdmin}
+                >Add Admin</button>
             </div>
             <pre>
-                {JSON.stringify(form, null, 2)}
+                {/*{JSON.stringify(form, null, 2)}*/}
             </pre>
             <pre>
-                {JSON.stringify(members, null, 2)}
+                {JSON.stringify(admins, null, 2)}
+                {/*{JSON.stringify(members, null, 2)}*/}
             </pre>
 
         </Form>
