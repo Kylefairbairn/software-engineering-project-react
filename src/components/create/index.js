@@ -7,32 +7,55 @@ const CreateGroup = () => {
     // error handling
         // if things are empty
     // lists for admin and members
-        // figure out how to use lists without writing over
+        // maybe try to onchange inside members have a function that add memmbers
+        // instead of lamba function inside of the onChange
     // connection to group service
         // user id is needed but pretty sure group object is complete
 
     // members are usernames to ensure uniqueness
 
     const [form, setForm] = useState({
-        formMembers: [], formDate: '', formAdmin: '', formGroupName: '', formDescription: ''
+        username: '', formDate: '', formAdmin: [], formGroupName: '', formDescription: ''
     })
-    const [members, setMembers] = useState({})
+    const [members, setMembers] = useState([])
 
-    const [errors, setErrors] = useState({})
+
+    const [errors, setErrors] = useState({
+    })
 
 
     const handleAddMembers = (e) => {
-        // if form.formembers is a valid user
 
         e.preventDefault();
 
-        const newMember = form.formMembers
+        // current user that is typed inside of text box
+        const newMember = {...form}
+
+        // const updatedMembers = [...members,newMember]
+        // setMembers(updatedMembers)
+        // console.log(members)
+        //setForm({...form, username: newMember})
+
+        setMembers([...members,newMember])
+
+        console.log(members)
 
 
 
-        // setMembers({...members, username: newMember})
+
+        // create a new form doesnt work currently
+
+        // const newForm = {
+        //     formMembers: members,
+        //     formDate: form.formDate,
+        //     formAdmin: form.formAdmin,
+        //     formGroupName: form.formGroupName,
+        //     formDescription: form.formDescription
+        // }
+
+        // setForm(newForm)
+
     }
-
 
     const handleCreateGroup = () => {
         console.log(form)
@@ -52,10 +75,9 @@ const CreateGroup = () => {
                     className="form-control"
                     id="membersList"
                     placeholder="Members"
-                    // onChange={(e) => setField(form.formMembers, e.target.value)}
                     //onChange={setFormMembers}
-                    value = {form.formMembers}
-                    onChange={(e) => setForm({...form, formMembers: e.target.value})}
+                    value = {form.username}
+                    onChange={(e) => setForm({...form, username: e.target.value})}
                 />
             </div>
 
@@ -66,7 +88,6 @@ const CreateGroup = () => {
                     className="form-control"
                     id="date"
                     placeholder="date"
-                    //onChange={(e) => setField(form.formDate, e.target.value)}
                     //onChange={setFormDate}
                     onChange = {(e) => setForm({...form, formDate: e.target.value})}
                 />
@@ -79,7 +100,6 @@ const CreateGroup = () => {
                     className="form-control"
                     id="Admin"
                     placeholder="admin"
-                    //onChange={(e) => setField(form.formAdmin, e.target.value)}
                     //onChange={setFormAdmin}
                     onChange = {(e) => setForm({...form, formAdmin: e.target.value})}
                 />
@@ -94,7 +114,7 @@ const CreateGroup = () => {
                     placeholder="Group name"
                     //onChange={(e) => setField(form.formGroupName, e.target.value)}
                     //onChange={setFormGroupName}
-                    onChange = {(e) => setForm({...form, formAdmin: e.target.value})}
+                    onChange = {(e) => setForm({...form, formGroupName: e.target.value})}
                 />
             </div>
 
@@ -128,7 +148,12 @@ const CreateGroup = () => {
 
                 <button type="button" className=" btn btn-primary btn-lg active">Add Admin</button>
             </div>
-
+            <pre>
+                {JSON.stringify(form, null, 2)}
+            </pre>
+            <pre>
+                {JSON.stringify(members, null, 2)}
+            </pre>
 
         </Form>
 
