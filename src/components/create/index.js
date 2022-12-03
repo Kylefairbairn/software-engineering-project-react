@@ -6,13 +6,10 @@ const CreateGroup = () => {
 
     // error handling
         // if things are empty
-    // lists for admin and members
-        // maybe try to onchange inside members have a function that add memmbers
-        // instead of lamba function inside of the onChange
+        // form validation
     // connection to group service
         // user id is needed but pretty sure group object is complete
 
-    // members are usernames to ensure uniqueness
 
     const [form, setForm] = useState({
         username: '', formDate: '', formAdmin: '', formGroupName: '', formDescription: ''
@@ -21,17 +18,16 @@ const CreateGroup = () => {
 
     const [admins, setAdmins] = useState([])
 
-
-    const [errors, setErrors] = useState({
-    })
+    const [userNameError, setUserNameErrors] = useState(false)
+    const [dateError, setDateErrors] = useState(false)
+    const [adminError, setAdminErrors] = useState(false)
+    const [groupNameError, setGroupNameErrors] = useState(false)
+    const [descriptionError, setDescriptionErrors] = useState(false)
 
 
     const handleAddMembers = (e) => {
-
         e.preventDefault();
-
         const newMember = {...form}
-
         setMembers([...members,newMember])
 
 
@@ -39,19 +35,45 @@ const CreateGroup = () => {
 
     const handleAddAdmin = (e) => {
         e.preventDefault()
-
         const newAdmin = {...form}
-
         setAdmins([...admins, newAdmin])
-
-
     }
 
     const handleCreateGroup = () => {
+
+        if(form.username.length === 0){
+            setUserNameErrors(true)
+        }
+
+        if(form.username.length > 0 && userNameError === true){
+            setUserNameErrors(false)
+        }
+        if (form.formDate.length === 0){
+            setDateErrors(true)
+        }
+
+        if(form.formDate.length > 0 && dateError === true){
+            setDateErrors(false)
+        }
+
+        if (form.formAdmin.length === 0){
+            setAdminErrors(true)
+        }
+
+        if(form.formAdmin.length > 0 && adminError === true){
+            setAdminErrors(false)
+        }
+
+        if (form.formGroupName.length === 0){
+            setGroupNameErrors(true)
+        }
+
+        if(form.formGroupName.length > 0 && groupNameError === true){
+            setGroupNameErrors(false)
+        }
+
         console.log(form)
 
-        // if none of the elements are empty and the username is found within the database
-        // get users id from user serivce and then create the group object
     }
 
 
@@ -59,17 +81,23 @@ const CreateGroup = () => {
         <Form>
 
             <div className="form-group">
-                <label htmlFor="membersList">Members User Name</label>
+                <label htmlFor="membersList">Username</label>
                 <input
                     type="text"
                     className="form-control"
                     id="membersList"
                     placeholder="Members"
-                    //onChange={setFormMembers}
                     value = {form.username}
                     onChange={(e) => setForm({...form, username: e.target.value})}
                 />
             </div>
+
+            <div className='' style={{color: 'red'}}>
+                {userNameError?
+                <label htmlFor='error' className='mt-2 mb-2' color='red' >
+                    Member cant be empty </label>:''}
+            </div>
+
 
             <div className="form-group">
                 <label htmlFor="date">Date</label>
@@ -80,6 +108,12 @@ const CreateGroup = () => {
                     placeholder="date"
                     onChange = {(e) => setForm({...form, formDate: e.target.value})}
                 />
+            </div>
+
+            <div className='' style={{color: 'red'}}>
+                {dateError?
+                    <label htmlFor='error' className='mt-2 mb-2' color='red' >
+                        Date cant be empty </label>:''}
             </div>
 
             <div className="form-group">
@@ -93,6 +127,12 @@ const CreateGroup = () => {
                 />
             </div>
 
+            <div className='' style={{color: 'red'}}>
+                {adminError?
+                    <label htmlFor='error' className='mt-2 mb-2' color='red' >
+                        Admins cant be empty </label>:''}
+            </div>
+
             <div className="form-group">
                 <label htmlFor="groupName">Group Name</label>
                 <input
@@ -102,6 +142,12 @@ const CreateGroup = () => {
                     placeholder="Group name"
                     onChange = {(e) => setForm({...form, formGroupName: e.target.value})}
                 />
+            </div>
+
+            <div className='' style={{color: 'red'}}>
+                {groupNameError?
+                    <label htmlFor='error' className='mt-2 mb-2' color='red' >
+                        Group name cant be empty </label>:''}
             </div>
 
             <div className="form-group">
@@ -115,7 +161,8 @@ const CreateGroup = () => {
                 </textarea>
             </div>
 
-            <div className = 'mb-4 mt-2 text-center'>
+
+            <div className = 'mb-4 mt-4 text-center'>
                 <button
                     type="button"
                     className=" btn btn-primary btn-lg active me-2 "
