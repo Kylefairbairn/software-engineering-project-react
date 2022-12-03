@@ -42,7 +42,7 @@ export const findGroupByName = (uid, name) =>
  * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
  */
 export const findGroupByGroupId = (gid) =>
-    axios.get(`${BASE_URL}/${gid}`)
+    axios.get(`${GROUPS_API}/${gid}`)
         .then(response => response.data)
 
 /**
