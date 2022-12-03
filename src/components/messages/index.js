@@ -33,9 +33,15 @@ const Messages = () => {
     useEffect(findGroups, [])
     return(
       <div className={'pt-2'}>
+          <div className={'row'}>
+              <h3>Messages</h3>
+          </div>
           <div className={'ps-2 row'}>
-              <div className={'col-5'}>
-                  <h3>Messages</h3>
+              <div className={'col'}>
+                  {/*TODO Add create group functionality*/}
+                  <button className={'btn btn-primary'}>
+                      Create Group
+                  </button>
               </div>
               <div className={'col'}>
                   <div className="input-group">
@@ -53,12 +59,6 @@ const Messages = () => {
           </div>
           <div className={'pt-2'}>
               <GroupsList groups={groups}/>
-          </div>
-          <div className={'pt-2'}>
-              {/*TODO Add create group functionality*/}
-              <button className={'btn btn-primary float-end'}>
-                  Create Group
-              </button>
           </div>
       </div>
   );

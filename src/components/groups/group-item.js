@@ -2,7 +2,6 @@ import {Link} from "react-router-dom";
 
 const GroupItem = ({group}) => {
     return (
-
         <li className={'list-group-item'}>
             <Link to={'/messages/group'}
                   style={{textDecoration: 'none', color: 'black'}}>
