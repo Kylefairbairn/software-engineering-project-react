@@ -11,6 +11,10 @@ const Chat = () => {
     const findGroupByGroupId = () =>
         groupService.findGroupByGroupId(gid)
             .then((group) => setGroup(group))
+
+    const userLeavesGroup = () => {
+
+    }
     useEffect(findGroupByGroupId, [])
     return(
         <div className={'rounded-3 bg-light p-2'}>
@@ -19,6 +23,9 @@ const Chat = () => {
                     <h4 className={'pt-1'}>
                         {group.groupName}
                     </h4>
+                    <p>
+                        {group.description}
+                    </p>
                 </div>
                 <div className={'col p-2'}>
                     <div className={'row pe-2'}>

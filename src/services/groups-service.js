@@ -14,7 +14,7 @@ const api = axios.create({
  * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
  */
 export const createGroup = (uid, group) =>
-    axios.post(`${BASE_URL}/${uid}`, group)
+    axios.post(`${GROUPS_API}/${uid}`, group)
         .then(response => response.data)
 
 /**
@@ -33,7 +33,7 @@ export const findGroupsForUser = (uid) =>
  * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
  */
 export const findGroupByName = (uid, name) =>
-    axios.get(`${BASE_URL}/user/${uid}/${name}`)
+    axios.get(`${GROUPS_API}/user/${uid}/${name}`)
         .then(response => response.data)
 
 /**
@@ -61,7 +61,7 @@ export const findAllCommonGroups = (uid, ouid) =>
  * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
  */
 export const updateGroup = (gid, group) =>
-    axios.put(`${BASE_URL}/${gid}`, group)
+    axios.put(`${GROUPS_API}/${gid}`, group)
         .then(response => response.data)
 
 /**
@@ -71,5 +71,5 @@ export const updateGroup = (gid, group) =>
  * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
  */
 export const deleteGroup = (uid, gid) =>
-    axios.delete(`${BASE_URL}/${uid}/${gid}`)
+    axios.delete(`${GROUPS_API}/${uid}/${gid}`)
         .then(response => response.data)
