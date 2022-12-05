@@ -1,6 +1,7 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
 import Groups from "../groups";
+import Chat from "../chat";
 
 
 const Messages = () => {
@@ -12,6 +13,7 @@ const Messages = () => {
             <div>
                 <Routes>
                     <Route path={'/'} element={<Groups/>}/>
+                    <Route path={'/chat/*'} element={<Chat/>}/>
                 </Routes>
             </div>
         </>
