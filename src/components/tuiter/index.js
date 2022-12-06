@@ -1,7 +1,7 @@
 import React from "react";
 import Navigation from "../navigation";
 import WhatsHappening from "../whats-happening";
-import {BrowserRouter, Routes, Route, HashRouter} from "react-router-dom";
+import {Routes, Route, HashRouter} from "react-router-dom";
 import Home from "../home";
 import Bookmarks from "../bookmarks";
 import Profile from "../profile";
@@ -13,6 +13,8 @@ import Messages from "../messages";
 import Lists from "../lists";
 import More from "../more";
 import {Login} from "../profile/login";
+import EditGroup from "../edit";
+import CreateGroup from "../create";
 
 function Tuiter () {
   return(
@@ -32,7 +34,9 @@ function Tuiter () {
               <Route path="/home/:uid" element={<Home/>}/>
               <Route path="/explore" element={<Explore/>}/>
               <Route path="/notifications" element={<Notifications/>}/>
-              <Route path="/messages" element={<Messages/>}/>
+              <Route path="/messages/chat/:gid" element={<Messages/>}/>
+              <Route path="/messages/chat/:gid/edit" element={<EditGroup/>}/>
+              <Route path="messages/create" element={<CreateGroup/>}/>
               <Route path="/bookmarks" element={<Bookmarks/>}/>
               <Route path="/lists" element={<Lists/>}/>
               <Route path="/profile" element={<Profile/>}/>
