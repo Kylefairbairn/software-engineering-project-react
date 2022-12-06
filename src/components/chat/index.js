@@ -1,4 +1,4 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import * as groupService from "../../services/groups-service"
 import ChatList from "./chat-list";
@@ -45,11 +45,12 @@ const Chat = () => {
                 <div className={'col p-2'}>
                     <div className={'row pe-2'}>
                         <div className='col-8 p-0'>
-
-                            <button className='btn btn-primary float-end'
-                                    onClick={userEditsGroup}>
+                            <Link to={`/messages/chat/${group._id}/edit`}>
+                            <button className='btn btn-primary float-end'>
                                 Edit
                             </button>
+                            </Link>
+
                         </div>
                         <div className='col ps-0'>
                             <button className='btn btn-danger float-end'
