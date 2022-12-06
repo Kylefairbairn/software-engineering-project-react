@@ -13,6 +13,7 @@ import Messages from "../messages";
 import Lists from "../lists";
 import More from "../more";
 import {Login} from "../profile/login";
+import EditGroup from "../edit";
 
 function Tuiter () {
   return(
@@ -33,6 +34,7 @@ function Tuiter () {
               <Route path="/explore" element={<Explore/>}/>
               <Route path="/notifications" element={<Notifications/>}/>
               <Route path="/messages/*" element={<Messages/>}/>
+              <Route path="/messages/chat/:gid/edit" element={<EditGroup/>}/>
               <Route path="/bookmarks" element={<Bookmarks/>}/>
               <Route path="/lists" element={<Lists/>}/>
               <Route path="/profile" element={<Profile/>}/>
