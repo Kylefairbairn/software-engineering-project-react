@@ -1,7 +1,17 @@
 import axios from "axios";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
+const MESSAGES_API = `${BASE_URL}/api/messages`;
 
-// findAllMessages
+
+/**
+ * Find all messages in the database
+ * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
+ */
+export const findAllMessages = () =>
+    axios.get(`${MESSAGES_API}`)
+        .then(response => response.data)
+
+
 
 // findAllMessagesSentByUser
 
