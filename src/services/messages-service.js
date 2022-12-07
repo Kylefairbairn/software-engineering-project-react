@@ -40,6 +40,14 @@ export const userDeleteMessage = (mid) =>
     axios.delete(`${MESSAGES_API}/${mid}`)
         .then(response => response.data)
 
-// userMessageGroup
+/**
+ * User creates a message to send to a group
+ * @param uid User's primary key
+ * @param gid Group's primary key
+ * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
+ */
+export const userMessageGroup = (uid, gid) =>
+    axios.post(`${USERS_API}/${uid}/groups/${gid}`)
+        .then(response => response.data)
 
 // userEditMessage
