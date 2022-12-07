@@ -1,9 +1,7 @@
-
-
 const ChatItem = ({message}) => {
     return (
         <li className={'list-group-item'}>
-            {message}
+            {message.content}
         </li>
     )
 }
