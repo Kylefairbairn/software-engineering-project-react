@@ -6,6 +6,7 @@ const ChatList = (
             []
     }
 ) => {
+    console.log(chats);
     return (
         <>
             <ul className={'list-group'}>
