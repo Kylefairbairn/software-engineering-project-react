@@ -50,4 +50,11 @@ export const userMessageGroup = (uid, gid) =>
     axios.post(`${USERS_API}/${uid}/groups/${gid}`)
         .then(response => response.data)
 
-// userEditMessage
+/**
+ * Edit specified message
+ * @param mid Messages's primary key
+ * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
+ */
+export const userEditMessage = (mid) =>
+    axios.post(`${MESSAGES_API}/${mid}`)
+        .then(response => response.data)
