@@ -31,7 +31,14 @@ export const findAllMessagesInGroup = (gid) =>
     axios.get(`${GROUPS_API}/${gid}/messages`)
         .then(response => response.data)
 
-// userDeleteMessage
+/**
+ * Delete specified message
+ * @param mid Messages's primary key
+ * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
+ */
+export const userDeleteMessage = (mid) =>
+    axios.delete(`${MESSAGES_API}/${mid}`)
+        .then(response => response.data)
 
 // userMessageGroup
 
