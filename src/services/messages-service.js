@@ -2,6 +2,7 @@ import axios from "axios";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 const MESSAGES_API = `${BASE_URL}/api/messages`;
 const USERS_API = `${BASE_URL}/api/users`;
+const GROUPS_API = `${BASE_URL}/api/groups`;
 
 
 /**
@@ -21,7 +22,14 @@ export const findAllMessagesSentByUser = (uid) =>
     axios.get(`${USERS_API}/${uid}/sent`)
         .then(response => response.data)
 
-// findAllMessagesInGroup
+/**
+ * Find all messages sent in a specified group
+ * @param gid Group's primary key
+ * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
+ */
+export const findAllMessagesInGroup = (gid) =>
+    axios.get(`${GROUPS_API}/${gid}/messages`)
+        .then(response => response.data)
 
 // userDeleteMessage
 
