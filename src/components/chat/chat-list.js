@@ -32,8 +32,7 @@ const ChatList = (
                 {
                     chats.map && chats.map(
                         message =>
-                            <ChatItem key={message._id}
-                                      message={message}/>)
+                            <ChatItem key={message._id} message={message} group={group}/>)
                 }
             </ul>
 
