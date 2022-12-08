@@ -11,6 +11,7 @@ const Chat = () => {
     const gid = path[3]
     const [group, setGroup] = useState({})
     const [chat, setChat] = useState([])
+    const [currentUser, setCurrentUser] = useState({})
 
     const findGroupByGroupId = () =>
         groupService.findGroupByGroupId(gid)
@@ -41,19 +42,21 @@ const Chat = () => {
     }
 
     useEffect(() => {
+        async function fetchLoggedInUser() {
+            try {
+                const currentUser = await authService.profile()
+                setCurrentUser(currentUser)
+                const groupData =  await groupService.findGroupByGroupId(gid)
+                setGroup(groupData)
+            } catch (e) {
+                navigate('/')
+            }
+        }
+        fetchLoggedInUser()
         findGroupByGroupId()
         findAllMessagesInGroup()
     }, [gid])
 
-    useEffect(() => {
-        async function fetchData() {
-            const currentUser = await authService.profile()
-            setProfile(currentUser)
-            const groupData =  await groupService.findGroupByGroupId(gid)
-            setGroup(groupData)
-        }
-        fetchData()
-    }, [])
     return(
         <div className={'rounded-3 bg-light p-2'}>
             <div className={'row ps-2'}>
@@ -85,7 +88,7 @@ const Chat = () => {
                 </div>
             </div>
             <div className={'row'}>
-                <ChatList chats={chat}/>
+                <ChatList chats={chat} group={group} currentUser={currentUser}/>
             </div>
 
             {/*add input box with button to send new messages*/}
