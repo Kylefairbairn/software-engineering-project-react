@@ -7,39 +7,39 @@ import {useNavigate} from "react-router-dom";
 
 const Groups = () => {
     const navigate = useNavigate()
-    const [profile, setProfile] = useState({})
+    const [currentUser, setCurrentUser] = useState({})
     const [groups, setGroups] = useState([])
-    const [user, setUser] = useState({})
+    const [otherUser, setOtherUser] = useState({})
     const [username, setUsername] = useState('')
 
     const findGroups = () =>
-        groupService.findGroupsForUser(profile._id)
+        groupService.findGroupsForUser(currentUser._id)
             .then(groups => setGroups(groups))
 
     const findCommonGroups = async (ouid) =>
-        await groupService.findAllCommonGroups(profile._id, ouid)
+        await groupService.findAllCommonGroups(currentUser._id, ouid)
             .then(groups => setGroups(groups))
 
     const findUserByUsername = async (name) =>
         await usersService.findUserByUsername(name)
-            .then(user => setUser(user))
+            .then(user => setOtherUser(user))
             .catch(e => alert(e))
 
     const searchHandler = async () => {
-        if (username === '' || username === undefined) {
+        if (!username) {
             return await findGroups()
         } else {
             await findUserByUsername(username)
-            return await findCommonGroups(user._id)
+            return await findCommonGroups(otherUser._id)
         }
     }
 
     useEffect(() => {
         async function fetchData() {
             try {
-                const currentUser = await authService.profile()
-                setProfile(currentUser)
-                const currentGroups = await groupService.findGroupsForUser(currentUser._id)
+                const profile = await authService.profile()
+                setCurrentUser(profile)
+                const currentGroups = await groupService.findGroupsForUser(profile._id)
                 setGroups(currentGroups)
             } catch (e) {
                 navigate('/login')
