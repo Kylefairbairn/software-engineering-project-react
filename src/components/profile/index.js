@@ -1,9 +1,8 @@
 import * as service from "../../services/auth-service"
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 
 const Profile = () => {
-  const location = useLocation()
   const navigate = useNavigate();
   const [profile, setProfile] = useState({});
   useEffect(async () => {
