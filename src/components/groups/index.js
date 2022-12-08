@@ -1,19 +1,23 @@
 import React, {useEffect, useState} from "react";
 import * as groupService from "../../services/groups-service";
 import * as usersService from "../../services/users-service";
+import * as authService from "../../services/auth-service"
 import GroupsList from "./group-list";
+import {useNavigate} from "react-router-dom";
 
 const Groups = () => {
+    const navigate = useNavigate()
+    const [profile, setProfile] = useState({})
     const [groups, setGroups] = useState([])
-    const [user, setUser] = useState()
+    const [user, setUser] = useState({})
     const [username, setUsername] = useState('')
 
     const findGroups = () =>
-        groupService.findGroupsForUser('633c41de89045f21193ea004')
+        groupService.findGroupsForUser(profile._id)
             .then(groups => setGroups(groups))
 
     const findCommonGroups = async (ouid) =>
-        await groupService.findAllCommonGroups('633c41de89045f21193ea004', ouid)
+        await groupService.findAllCommonGroups(profile._id, ouid)
             .then(groups => setGroups(groups))
 
     const findUserByUsername = async (name) =>
@@ -30,7 +34,19 @@ const Groups = () => {
         }
     }
 
-    useEffect(findGroups, [])
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const currentUser = await authService.profile()
+                setProfile(currentUser)
+                const currentGroups = await groupService.findGroupsForUser(currentUser._id)
+                setGroups(currentGroups)
+            } catch (e) {
+                navigate('/login')
+            }
+        }
+        fetchData()
+    }, [])
     return(
         <div className={'pt-2'}>
             <div className={'ps-2 row'}>
