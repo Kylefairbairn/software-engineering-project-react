@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import {Form, FormControl} from "react-bootstrap";
+import * as usersService from "../../services/users-service";
+import * as groupSerivce from "../../services/groups-service"
 
 
 const CreateGroup = () => {
@@ -24,65 +26,134 @@ const CreateGroup = () => {
     const [groupNameError, setGroupNameErrors] = useState(false)
 
 
-    const handleAddMembers = (e) => {
-        e.preventDefault();
-        const newMember = {...form}
-        setGroupMembers([...groupMembers,newMember])
+    const handleAddMembers = async () => {
+        let user = await usersService.findUserByUsername(form.username)
+
+        if(user !== null){
+            const newMember = {...form}
+            setGroupMembers([...groupMembers, newMember])
+        }
+
     }
 
 
-    const handleAddAdmin = (e) => {
-        e.preventDefault()
-        const newAdmin = {...form}
-        setAdmins([...admins, newAdmin])
+    const handleAddAdmin = async () => {
+        let validAdmin = await usersService.findUserByUsername(form.admin)
+
+        if(validAdmin !== null){
+            const newAdmin = {...form}
+            setAdmins([...admins, newAdmin])
+        }
     }
 
 
-    const handleCreateGroupFromEntries = () => {
+    const formEntryHandler = () => {
 
-        findUsers()
-        findAdmins()
+        let flag = false
 
         if(form.username.length === 0){
             setUserNameErrors(true)
+            flag = true
         }
 
         if(form.username.length > 0 && userNameError === true){
             setUserNameErrors(false)
+            flag = true
         }
 
         if (form.date.length === 0){
             setDateErrors(true)
+            flag = true
         }
         if(form.date.length > 0 && dateError === true){
             setDateErrors(false)
+            flag = true
         }
 
         if (form.admin.length === 0){
             setAdminErrors(true)
+            flag = true
         }
 
         if(form.admin.length > 0 && adminError === true){
             setAdminErrors(false)
+            flag = true
         }
 
         if (form.groupName.length === 0){
             setGroupNameErrors(true)
+            flag = true
         }
 
         if(form.groupName.length > 0 && groupNameError === true){
             setGroupNameErrors(false)
+            flag = true
         }
 
-        create()
+        return flag
+    }
+
+
+    const findUsers = async () => {
+        let membersLength = groupMembers.length;
+        let flag = false
+        // more than one member in group
+        for (let i = 0; i < membersLength; i++) {
+            if (groupMembers[i].username !== "") {
+                let valid = await usersService.findUserByUsername(groupMembers[i].username)
+                if (valid !== null) {
+                    console.log(valid)
+                    allUsernames.push(groupMembers[i].username)
+                }
+            }
+        }
+
+        // one member in group
+        if (form.username !== "" && groupMembers.length === 0) {
+            let valid = await usersService.findUserByUsername(form.username)
+            if (valid !== null) {
+                allUsernames.push(form.username)
+            }
+
+        }
 
     }
 
-    const create = () => {
+    const findAdmins = async () => {
+        let adminsLength = admins.length;
 
-        const uid = groupMembers[0]
+        // more than one member in group
+        for (let i = 0; i < adminsLength; i++) {
+            if (admins[i].admin !== "") {
+                let valid = await usersService.findUserByUsername(form.admin)
+                if(valid !== null){
+                    allAdmins.push(admins[i].admin)
+                }
+            }
+        }
 
-        const group = {
+        // one member in group
+        if (form.admin !== '' && groupMembers.length === 0) {
+            let valid = await usersService.findUserByUsername(form.admin)
+            if(valid !== null){
+                allAdmins.push(form.admin)
+            }
+        }
+
+    }
+
+
+    const createNewGroup = async () => {
+
+        let invalidEntry = formEntryHandler()
+        await findUsers()
+        await findAdmins()
+
+        if(allUsernames.length !== 0 && allAdmins.length !== 0 && invalidEntry !== true){
+            let user = await usersService.findUserByUsername(allUsernames[0])
+            let userID = user._id
+
+            const group = {
                 members: allUsernames,
                 createdOn: form.date,
                 admin: allAdmins,
@@ -90,33 +161,16 @@ const CreateGroup = () => {
                 description: form.description
             }
 
-            // change service to create group with username
-            // need to change tuiter end path to match service path
-            // axios.post('${BASE_URL)/$uid',group).then(response => response.data)
+            console.log(group)
 
-    }
+            let status = await groupSerivce.createGroup(userID, group)
 
+            console.log(status)
 
-    const findUsers = () => {
-        let membersLength = groupMembers.length;
-        for(let i = 0; i <membersLength; i++){
-            if(groupMembers[i].username !== ""){
-                allUsernames.push(groupMembers[i].username)
-            }
         }
 
-    }
 
-    const findAdmins = () => {
-        let adminsLength = admins.length;
-        for(let i = 0; i <adminsLength; i++){
-            if(admins[i].admin !==""){
-                allAdmins.push(admins[i].admin)
-            }
         }
-    }
-
-
 
     return(
         <Form>
@@ -208,7 +262,7 @@ const CreateGroup = () => {
                 <button
                     type="button"
                     className=" btn btn-primary btn-lg active me-2 "
-                    onClick={handleCreateGroupFromEntries}
+                    onClick={createNewGroup}
                 >Create Group
                 </button>
 
