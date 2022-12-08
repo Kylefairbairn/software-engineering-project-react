@@ -46,8 +46,8 @@ export const userDeleteMessage = (mid) =>
  * @param gid Group's primary key
  * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
  */
-export const userMessageGroup = (uid, gid) =>
-    axios.post(`${USERS_API}/${uid}/groups/${gid}`)
+export const userMessageGroup = (uid, gid, message) =>
+    axios.post(`${USERS_API}/${uid}/groups/${gid}`, message)
         .then(response => response.data)
 
 /**
