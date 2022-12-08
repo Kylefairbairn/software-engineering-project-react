@@ -1,6 +1,7 @@
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import * as groupService from "../../services/groups-service"
+import * as authService from "../../services/auth-service"
 import ChatList from "./chat-list";
 
 const Chat = () => {
@@ -8,14 +9,11 @@ const Chat = () => {
     const path = useLocation().pathname.split("/")
     const gid = path[3]
     const [group, setGroup] = useState({})
-
-    const findGroupByGroupId = () =>
-        groupService.findGroupByGroupId(gid)
-            .then((group) => setGroup(group))
+    const [profile, setProfile] = useState({})
 
     const userLeavesGroup = async () => {
-        const memberIndex = group.members.indexOf("633c41de89045f21193ea004") // TODO: Change to current user ID
-        const adminIndex = group.admin.indexOf('633c41de89045f21193ea004') // TODO: Change to current user ID
+        const memberIndex = group.members.indexOf(profile._id)
+        const adminIndex = group.admin.indexOf(profile._id)
 
         if (memberIndex > -1) {
             group.members.splice(memberIndex, 1)
@@ -30,7 +28,15 @@ const Chat = () => {
     const userEditsGroup = async () => {
         console.log('edit page')
     }
-    useEffect(findGroupByGroupId, [])
+    useEffect(() => {
+        async function fetchData() {
+            const currentUser = await authService.profile()
+            setProfile(currentUser)
+            const groupData =  await groupService.findGroupByGroupId(gid)
+            setGroup(groupData)
+        }
+        fetchData()
+    }, [])
     return(
         <div className={'rounded-3 bg-light p-2'}>
             <div className={'row ps-2'}>
