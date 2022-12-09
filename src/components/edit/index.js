@@ -47,9 +47,6 @@ const EditGroup = () => {
                Group Description: {group.description}
             </h2>
             <h2>
-                Edited Description:
-            </h2>
-            <h2>
 
             </h2>
             <h2>

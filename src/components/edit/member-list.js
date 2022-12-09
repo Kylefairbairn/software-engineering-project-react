@@ -1,4 +1,5 @@
 import MemberItem from "./member-item";
+
 import groups from "../groups";
 
 // member ID
@@ -16,7 +17,7 @@ const MemberList = (
             <ul className={'list-group'}>
                 {
                     memberList.map && memberList.map(member =>
-                        <MemberItem key={member._id} group={group} memberUsername={member.username}/>)
+                        <MemberItem key={member} group={group} uid={member}/>)
                 }
             </ul>
         </>
