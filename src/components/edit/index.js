@@ -28,15 +28,16 @@ const EditGroup = () => {
     useEffect(findGroupByGroupId, [])
     return(
         <div>
-            <EditGroupNameAndDescription key={gid} groupName={group.groupName} groupDescription={group.description}/>
+            <EditGroupNameAndDescription key={0} gid={gid} group={group}
+                                         groupName={group.groupName} groupDescription={group.description}/>
             <h2>
                 Admins:
             </h2>
-            <AdminList key={gid} group={gid} adminList={group.admin}/>
+            <AdminList key={1} group={gid} adminList={group.admin}/>
             <h2>
                 Members:
             </h2>
-            <MemberList key={gid} group={gid} memberList={group.members}/>
+            <MemberList key={2} group={gid} memberList={group.members}/>
         </div>
 
     );
