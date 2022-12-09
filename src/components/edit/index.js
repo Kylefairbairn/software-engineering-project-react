@@ -37,7 +37,7 @@ const EditGroup = () => {
             <h2>
                 Members:
             </h2>
-            <MemberList key={2} group={gid} memberList={group.members}/>
+            <MemberList key={2} group={group} memberList={group.members}/>
         </div>
 
     );

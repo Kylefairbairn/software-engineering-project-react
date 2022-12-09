@@ -1,15 +1,26 @@
 import {useEffect, useState} from "react";
 import * as userService from "../../services/users-service";
+import * as groupService from "../../services/groups-service";
 
 const MemberItem = (
     {
       uid, group
     }
 ) => {
+
     const [member, setMember] = useState({})
 
     const removeUserFromGroup = async () => {
-    console.log("remove the user")
+        if (group.admin.includes(member._id)) {
+            alert("You cannot remove an admin from the group")
+        } else {
+
+            const memberIndex = group.members.indexOf(uid)
+            if (memberIndex > -1) {
+                group.members.splice(memberIndex, 1)
+            }
+            await groupService.updateGroup(group._id, group)
+        }
     }
 
     useEffect(() => {
@@ -38,4 +49,5 @@ const MemberItem = (
         </li>
     )
 }
+
 export default MemberItem
