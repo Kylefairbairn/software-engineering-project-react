@@ -3,7 +3,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import * as groupService from "../../services/groups-service"
 import MemberList from "./member-list";
 import AdminList from "./admin-list";
-import EditGroupName from "./edit-group-name";
+import EditGroupNameAndDescription from "./edit-group-name-and-description";
 
 
 const EditGroup = () => {
@@ -28,9 +28,7 @@ const EditGroup = () => {
     useEffect(findGroupByGroupId, [])
     return(
         <div>
-        <h1>
-            <EditGroupName key={gid} groupName={group.groupName}/>
-        </h1>
+            <EditGroupNameAndDescription key={gid} groupName={group.groupName} groupDescription={group.description}/>
             <h2>
                 Admins:
             </h2>
@@ -39,15 +37,6 @@ const EditGroup = () => {
                 Members:
             </h2>
             <MemberList key={gid} group={gid} memberList={group.members}/>
-
-            <h2>
-               Group Description: {group.description}
-            </h2>
-            <h2>
-
-            </h2>
-            <h2>
-            </h2>
         </div>
 
     );
