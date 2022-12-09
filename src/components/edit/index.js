@@ -24,7 +24,7 @@ const EditGroup = () => {
             <h2>
                 Admins:
             </h2>
-            <AdminList key={1} group={gid} adminList={group.admin}/>
+            <AdminList key={1} group={group} adminList={group.admin}/>
             <h2>
                 Members:
             </h2>

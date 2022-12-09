@@ -8,10 +8,6 @@ const AdminItem = (
 ) => {
     const [admin, setAdmin] = useState({})
 
-    const removeUserFromGroup = async () => {
-        console.log("remove the user")
-    }
-
     useEffect(() => {
         async function fetchData(){
             try {
