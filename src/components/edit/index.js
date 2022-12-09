@@ -16,15 +16,6 @@ const EditGroup = () => {
         groupService.findGroupByGroupId(gid)
             .then((group) => setGroup(group))
 
-    const [groupMembers, setGroupMembers] = useState([])
-    const [admins, setAdmins] = useState([])
-    const [userNameError, setUserNameErrors] = useState(false)
-    const [dateError, setDateErrors] = useState(false)
-    const [adminError, setAdminErrors] = useState(false)
-    const [groupNameError, setGroupNameErrors] = useState(false)
-
-
-
     useEffect(findGroupByGroupId, [])
     return(
         <div>

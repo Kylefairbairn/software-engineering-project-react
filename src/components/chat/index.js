@@ -26,8 +26,15 @@ const Chat = () => {
     }
 
     const userEditsGroup = async () => {
-        console.log('edit page')
+
+
+        if (group.admin.includes(profile._id)) {
+            navigate(`/messages/chat/${group._id}/edit`)
+        } else {
+            alert('You cannot edit a group unless you are an admin for that group')
+        }
     }
+
     useEffect(() => {
         async function fetchData() {
             const currentUser = await authService.profile()
@@ -51,11 +58,9 @@ const Chat = () => {
                 <div className={'col p-2'}>
                     <div className={'row pe-2'}>
                         <div className='col-8 p-0'>
-                            <Link to={`/messages/chat/${group._id}/edit`}>
-                            <button className='btn btn-primary float-end'>
+                            <button className='btn btn-primary float-end' onClick={userEditsGroup}>
                                 Edit
                             </button>
-                            </Link>
 
                         </div>
                         <div className='col ps-0'>
