@@ -3,8 +3,7 @@ import * as groupService from "../../services/groups-service";
 import * as usersService from "../../services/users-service";
 import * as authService from "../../services/auth-service"
 import GroupsList from "./group-list";
-import {useNavigate} from "react-router-dom";
-import { Link } from "react-router-dom";
+import {useNavigate, Link} from "react-router-dom";
 
 const Groups = () => {
     const navigate = useNavigate()
