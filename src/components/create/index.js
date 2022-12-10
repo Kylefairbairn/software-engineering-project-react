@@ -353,14 +353,6 @@ const CreateGroup = () => {
                         Can not add new admin (not a valid username) </label>:''}
             </div>
 
-            <pre>
-                {JSON.stringify(form, null, 2)}
-            </pre>
-            <pre>
-                {/*{JSON.stringify(admins, null, 2)}*/}
-                {/*{JSON.stringify(groupMembers, null, 2)}*/}
-            </pre>
-
         </Form>
 
     );
