@@ -1,19 +1,19 @@
 import React, {useState} from "react";
 import {Form, FormControl} from "react-bootstrap";
+import AddMemberModal from "../create/AddMemberModal"
 import * as usersService from "../../services/users-service";
 import * as groupSerivce from "../../services/groups-service"
+
+import {useNavigate} from "react-router-dom";
 
 
 const CreateGroup = () => {
 
-    // error handling
-        // if things are empty
-        // form validation
-    // connection to group service
-        // user id is needed but pretty sure group object is complete
-
     const allUsernames = []
+    const allUsernamesPK = []
     const allAdmins = []
+    const allAdminsPK = []
+    let navigate = useNavigate()
 
     const [form, setForm] = useState({
         username: '', date: '', admin: '', groupName: '', description: ''
@@ -21,28 +21,45 @@ const CreateGroup = () => {
     const [groupMembers, setGroupMembers] = useState([])
     const [admins, setAdmins] = useState([])
     const [userNameError, setUserNameErrors] = useState(false)
+    const [createGroup, setCreateGroup] = useState(false)
+    const [addMemberError, setAddMemberError] = useState(false)
+    const [addAdminError, setAddAdminError] = useState(false)
     const [dateError, setDateErrors] = useState(false)
     const [adminError, setAdminErrors] = useState(false)
     const [groupNameError, setGroupNameErrors] = useState(false)
 
 
     const handleAddMembers = async () => {
-        let user = await usersService.findUserByUsername(form.username)
 
-        if(user !== null){
-            const newMember = {...form}
-            setGroupMembers([...groupMembers, newMember])
+        if(form.username !== "") {
+
+            let user = await usersService.findUserByUsername(form.username)
+
+            if (user !== null) {
+                const newMember = {...form}
+                setGroupMembers([...groupMembers, newMember])
+            }
+
         }
-
+        else{
+            setAddMemberError(true)
+        }
     }
 
 
     const handleAddAdmin = async () => {
-        let validAdmin = await usersService.findUserByUsername(form.admin)
 
-        if(validAdmin !== null){
-            const newAdmin = {...form}
-            setAdmins([...admins, newAdmin])
+        if(form.admin !== "") {
+
+            let validAdmin = await usersService.findUserByUsername(form.admin)
+
+            if (validAdmin !== null) {
+                const newAdmin = {...form}
+                setAdmins([...admins, newAdmin])
+            }
+        }
+        else{
+            setAddAdminError(true)
         }
     }
 
@@ -102,8 +119,8 @@ const CreateGroup = () => {
             if (groupMembers[i].username !== "") {
                 let valid = await usersService.findUserByUsername(groupMembers[i].username)
                 if (valid !== null) {
-                    console.log(valid)
                     allUsernames.push(groupMembers[i].username)
+                    allUsernamesPK.push(valid._id)
                 }
             }
         }
@@ -113,6 +130,7 @@ const CreateGroup = () => {
             let valid = await usersService.findUserByUsername(form.username)
             if (valid !== null) {
                 allUsernames.push(form.username)
+                allUsernamesPK.push(valid._id)
             }
 
         }
@@ -128,6 +146,8 @@ const CreateGroup = () => {
                 let valid = await usersService.findUserByUsername(form.admin)
                 if(valid !== null){
                     allAdmins.push(admins[i].admin)
+                    allAdminsPK.push(valid._id)
+
                 }
             }
         }
@@ -137,6 +157,7 @@ const CreateGroup = () => {
             let valid = await usersService.findUserByUsername(form.admin)
             if(valid !== null){
                 allAdmins.push(form.admin)
+                allAdminsPK.push(valid._id)
             }
         }
 
@@ -148,29 +169,56 @@ const CreateGroup = () => {
         let invalidEntry = formEntryHandler()
         await findUsers()
         await findAdmins()
+        let user = {}
+        let userId = ''
 
-        if(allUsernames.length !== 0 && allAdmins.length !== 0 && invalidEntry !== true){
-            let user = await usersService.findUserByUsername(allUsernames[0])
-            let userID = user._id
+        if(allUsernames.length !== 0) {
+            user = await usersService.findUserByUsername(allUsernames[0])
+            userId = user._id
+        }
+
+        if(allUsernames.length > 1 && allAdmins.length !== 0 && invalidEntry !== true){
 
             const group = {
-                members: allUsernames,
+                members: allUsernamesPK.slice(1,allUsernamesPK.length),
                 createdOn: form.date,
-                admin: allAdmins,
+                admin: allAdminsPK.slice(1,allAdminsPK.length),
                 groupName: form.groupName,
                 description: form.description
             }
 
             console.log(group)
 
-            let status = await groupSerivce.createGroup(userID, group)
+            await groupSerivce.createGroup(userId, group)
 
-            console.log(status)
+
+            navigate("/messages")
+
+
+        }
+
+        if(allUsernames.length === 1 && allAdmins.length === 1 && invalidEntry !== true){
+            const group = {
+                members: [],
+                createdOn: form.date,
+                admin: [],
+                groupName: form.groupName,
+                description: form.description
+            }
+
+            console.log(group)
+
+            await groupSerivce.createGroup(userId, group)
+
+            navigate("/messages")
+
+        }
+
+        // setCreateGroup(false)
 
         }
 
 
-        }
 
     return(
         <Form>
@@ -268,7 +316,7 @@ const CreateGroup = () => {
 
                 <button
                     type="button"
-                    className=" btn btn-primary btn-lg active me-2 "
+                    className=" btn btn-primary btn-lg active me-2  "
                     onClick={handleAddMembers}
                 >Add Member
                 </button>
@@ -278,6 +326,33 @@ const CreateGroup = () => {
                         onClick={handleAddAdmin}
                 >Add Admin</button>
             </div>
+
+            <div className='text-center' style={{color: 'red'}}>
+                {addMemberError?
+                    <label htmlFor='error' className='mt-2 mb-2' color='red' >
+                        Can not add new member (not a valid username) </label>:''}
+            </div>
+
+            <div className='text-center' style={{color: 'green'}}>
+                {addMemberError?
+                    <label htmlFor='error' className='mt-2 mb-2'>
+                        Can not add new member (not a valid username) </label>:''}
+            </div>
+
+            <div className='' style={{color: 'red'}}>
+                {createGroup?
+                    <label htmlFor='error' className='mt-2 mb-2' color='red' >
+                        Error when creating group! Try Again </label>:''}
+            </div>
+
+
+
+            <div className='text-center' style={{color: 'red'}}>
+                {addAdminError?
+                    <label htmlFor='error' className='mt-2 mb-2' color='red' >
+                        Can not add new admin (not a valid username) </label>:''}
+            </div>
+
             <pre>
                 {JSON.stringify(form, null, 2)}
             </pre>

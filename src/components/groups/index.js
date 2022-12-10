@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import * as groupService from "../../services/groups-service";
 import * as usersService from "../../services/users-service";
 import GroupsList from "./group-list";
+import {Link} from "react-router-dom";
 
 const Groups = () => {
     const [groups, setGroups] = useState([])
@@ -36,9 +37,11 @@ const Groups = () => {
             <div className={'ps-2 row'}>
                 <div className={'col'}>
                     {/*TODO Add create group functionality*/}
+                    <Link to={"/messages/create"}>
                     <button className={'btn btn-primary'}>
                         Create Group
                     </button>
+                    </Link>
                 </div>
                 <div className={'col'}>
                     <div className="input-group">
