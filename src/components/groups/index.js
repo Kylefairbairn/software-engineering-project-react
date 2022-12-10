@@ -4,6 +4,7 @@ import * as usersService from "../../services/users-service";
 import * as authService from "../../services/auth-service"
 import GroupsList from "./group-list";
 import {useNavigate} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Groups = () => {
     const navigate = useNavigate()
@@ -51,10 +52,11 @@ const Groups = () => {
         <div className={'pt-2'}>
             <div className={'ps-2 row'}>
                 <div className={'col'}>
-                    {/*TODO Add create group functionality*/}
-                    <button className={'btn btn-primary'}>
-                        Create Group
-                    </button>
+                    <Link to={'/messages/create'}>
+                        <button className={'btn btn-primary'}>
+                            Create Group
+                        </button>
+                    </Link>
                 </div>
                 <div className={'col'}>
                     <div className="input-group">
