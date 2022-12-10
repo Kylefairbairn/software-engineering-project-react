@@ -55,6 +55,6 @@ export const userMessageGroup = (uid, gid, message) =>
  * @param mid Messages's primary key
  * @returns {Promise<AxiosResponse<any>>} Promises to return the data from response
  */
-export const userEditMessage = (mid) =>
-    axios.post(`${MESSAGES_API}/${mid}`)
+export const userEditMessage = (mid, message) =>
+    axios.put(`${MESSAGES_API}/${mid}`, message)
         .then(response => response.data)

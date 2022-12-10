@@ -38,7 +38,13 @@ const Chat = () => {
     }
 
     const userEditsGroup = async () => {
-        console.log('edit page')
+
+
+        if (group.admin.includes(profile._id)) {
+            navigate(`/messages/chat/${group._id}/edit`)
+        } else {
+            alert('You cannot edit a group unless you are an admin for that group')
+        }
     }
 
     useEffect(() => {
