@@ -3,13 +3,25 @@ import {useEffect, useState} from "react";
 import * as groupService from "../../services/groups-service"
 import * as authService from "../../services/auth-service"
 import ChatList from "./chat-list";
+import * as messageService from "../../services/messages-service"
 
 const Chat = () => {
     const navigate = useNavigate()
     const path = useLocation().pathname.split("/")
     const gid = path[3]
     const [group, setGroup] = useState({})
+    const [chat, setChat] = useState([])
+    const [currentUser, setCurrentUser] = useState({})
+
+    const findGroupByGroupId = () =>
+        groupService.findGroupByGroupId(gid)
+            .then((group) => setGroup(group))
     const [profile, setProfile] = useState({})
+
+    const findAllMessagesInGroup = async () =>
+        messageService.findAllMessagesInGroup(gid)
+            .then((chat) => setChat(chat))
+
 
     const userLeavesGroup = async () => {
         const memberIndex = group.members.indexOf(profile._id)
@@ -36,14 +48,21 @@ const Chat = () => {
     }
 
     useEffect(() => {
-        async function fetchData() {
-            const currentUser = await authService.profile()
-            setProfile(currentUser)
-            const groupData =  await groupService.findGroupByGroupId(gid)
-            setGroup(groupData)
+        async function fetchLoggedInUser() {
+            try {
+                const currentUser = await authService.profile()
+                setCurrentUser(currentUser)
+                const groupData =  await groupService.findGroupByGroupId(gid)
+                setGroup(groupData)
+            } catch (e) {
+                navigate('/')
+            }
         }
-        fetchData()
-    }, [])
+        fetchLoggedInUser()
+        findGroupByGroupId()
+        findAllMessagesInGroup()
+    }, [gid])
+
     return(
         <div className={'rounded-3 bg-light p-2'}>
             <div className={'row ps-2'}>
@@ -58,9 +77,11 @@ const Chat = () => {
                 <div className={'col p-2'}>
                     <div className={'row pe-2'}>
                         <div className='col-8 p-0'>
-                            <button className='btn btn-primary float-end' onClick={userEditsGroup}>
-                                Edit
-                            </button>
+                            <Link to={`/messages/chat/${group._id}/edit`}>
+                                <button className='btn btn-primary float-end'>
+                                    Edit
+                                </button>
+                            </Link>
 
                         </div>
                         <div className='col ps-0'>
@@ -73,8 +94,11 @@ const Chat = () => {
                 </div>
             </div>
             <div className={'row'}>
-                <ChatList/>
+                <ChatList chats={chat} group={group} currentUser={currentUser}/>
             </div>
+
+            {/*add input box with button to send new messages*/}
+
         </div>
     )
 }
