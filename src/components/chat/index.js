@@ -1,9 +1,10 @@
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as groupService from "../../services/groups-service"
 import * as authService from "../../services/auth-service"
 import ChatList from "./chat-list";
 import * as messageService from "../../services/messages-service"
+import MemberListNoButton from "./member-list-noButton";
 
 const Chat = () => {
     const navigate = useNavigate()
@@ -16,6 +17,7 @@ const Chat = () => {
     const findGroupByGroupId = () =>
         groupService.findGroupByGroupId(gid)
             .then((group) => setGroup(group))
+    const [profile, setProfile] = useState({})
 
     const findAllMessagesInGroup = async () =>
         messageService.findAllMessagesInGroup(gid)
@@ -69,12 +71,15 @@ const Chat = () => {
         <div className={'rounded-3 bg-light p-2'}>
             <div className={'row ps-2'}>
                 <div className={'col p-2'}>
-                    <h4 className={'pt-1'}>
+                    <h2 className={'pt-1'}>
                         {group.groupName}
-                    </h4>
+                    </h2>
                     <p>
                         {group.description}
                     </p>
+                    <h4>Group Members:</h4>
+                    <MemberListNoButton key={2} group={group} memberList={group.members}/>
+                    <hr/>
                 </div>
                 <div className={'col p-2'}>
                     <div className={'row pe-2'}>
@@ -99,7 +104,6 @@ const Chat = () => {
                 <ChatList chats={chat} group={group} currentUser={currentUser}/>
             </div>
 
-            {/*add input box with button to send new messages*/}
 
         </div>
     )
