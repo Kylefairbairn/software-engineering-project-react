@@ -10,10 +10,8 @@ import * as authService from "../../services/auth-service";
 
 const CreateGroup = () => {
 
-    const allUsernames = []
-    const allUsernamesPK = []
-    const allAdmins = []
-    const allAdminsPK = []
+    // figure out how to create a modal or notfication if a member/admin/group has been added/created
+
     let navigate = useNavigate()
 
     const [form, setForm] = useState({
@@ -35,19 +33,12 @@ const CreateGroup = () => {
     const handleAddMembers = async () => {
 
         if(form.username !== "") {
-
             let user = await usersService.findUserByUsername(form.username)
 
             if (user !== null) {
-                console.log("accessing the second if")
-
-                //setGroupMembers(user._id)
-
-                const newMember = {...form}
-                setGroupMembers([...groupMembers, newMember])
+                setGroupMembers([...groupMembers, user._id])
             }
             else{
-                console.log("accessing the add members ")
                 setAddMemberError(true)
             }
         }
@@ -61,17 +52,14 @@ const CreateGroup = () => {
             let validAdmin = await usersService.findUserByUsername(form.admin)
 
             if (validAdmin !== null) {
-                const newAdmin = {...form}
-                setAdmins([...admins, newAdmin])
+                setAdmins([...admins,validAdmin._id])
             }
             else{
                 setAddAdminError(true)
             }
         }
 
-
     }
-
 
     const formEntryHandler = () => {
 
@@ -119,115 +107,27 @@ const CreateGroup = () => {
         return flag
     }
 
-
-    const findUsers = async () => {
-        let membersLength = groupMembers.length;
-        let flag = false
-        // more than one member in group
-        for (let i = 0; i < membersLength; i++) {
-            if (groupMembers[i].username !== "") {
-                let valid = await usersService.findUserByUsername(groupMembers[i].username)
-                if (valid !== null) {
-                    allUsernames.push(groupMembers[i].username)
-                    allUsernamesPK.push(valid._id)
-                }
-            }
-        }
-
-        // one member in group
-        if (form.username !== "" && groupMembers.length === 0) {
-            let valid = await usersService.findUserByUsername(form.username)
-            if (valid !== null) {
-                allUsernames.push(form.username)
-                allUsernamesPK.push(valid._id)
-            }
-
-        }
-
-    }
-
-    const findAdmins = async () => {
-        let adminsLength = admins.length;
-
-        // more than one member in group
-        for (let i = 0; i < adminsLength; i++) {
-            if (admins[i].admin !== "") {
-                let valid = await usersService.findUserByUsername(form.admin)
-                if(valid !== null){
-                    allAdmins.push(admins[i].admin)
-                    allAdminsPK.push(valid._id)
-
-                }
-            }
-        }
-
-        // one member in group
-        if (form.admin !== '' && groupMembers.length === 0) {
-            let valid = await usersService.findUserByUsername(form.admin)
-            if(valid !== null){
-                allAdmins.push(form.admin)
-                allAdminsPK.push(valid._id)
-            }
-        }
-
-    }
-
-
     const createNewGroup = async () => {
 
         let invalidEntry = formEntryHandler()
-        // await findUsers()
-        // await findAdmins()
-        let user = {}
-        let userId = ''
 
-        // pulling profile
-        //const profile = await authService.profile()
-        //console.log(profile)
+        const currentUser = await authService.profile()
 
-
-        console.log(groupMembers)
-
-        if(allUsernames.length !== 0) {
-            user = await usersService.findUserByUsername(allUsernames[0])
-            userId = user._id
-        }
-
-        if(allUsernames.length > 1 && allAdmins.length !== 0 && invalidEntry !== true){
+        if(currentUser !== null && invalidEntry === false) {
 
             const group = {
-                members: allUsernamesPK.slice(1,allUsernamesPK.length),
+                members: groupMembers,
                 createdOn: form.date,
-                admin: allAdminsPK.slice(1,allAdminsPK.length),
+                admin: admins,
                 groupName: form.groupName,
                 description: form.description
             }
 
-            await groupSerivce.createGroup(userId, group)
-            navigate("/messages")
-
-
+            let status = await groupSerivce.createGroup(currentUser._id, group)
+            //     navigate("/messages")
+            console.log(status)
         }
-
-        if(allUsernames.length === 1 && allAdmins.length === 1 && invalidEntry !== true){
-            const group = {
-                members: [],
-                createdOn: form.date,
-                admin: [],
-                groupName: form.groupName,
-                description: form.description
-            }
-
-
-            await groupSerivce.createGroup(userId, group)
-
-            navigate("/messages")
-
-        }
-        setCreateGroup(false)
-
-        }
-
+    }
 
 
     return(
