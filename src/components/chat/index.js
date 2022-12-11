@@ -16,7 +16,6 @@ const Chat = () => {
     const findGroupByGroupId = () =>
         groupService.findGroupByGroupId(gid)
             .then((group) => setGroup(group))
-    const [profile, setProfile] = useState({})
 
     const findAllMessagesInGroup = async () =>
         messageService.findAllMessagesInGroup(gid)
@@ -24,8 +23,8 @@ const Chat = () => {
 
 
     const userLeavesGroup = async () => {
-        const memberIndex = group.members.indexOf(profile._id)
-        const adminIndex = group.admin.indexOf(profile._id)
+        const memberIndex = group.members.indexOf(currentUser._id)
+        const adminIndex = group.admin.indexOf(currentUser._id)
 
         if (memberIndex > -1) {
             group.members.splice(memberIndex, 1)
@@ -38,9 +37,7 @@ const Chat = () => {
     }
 
     const userEditsGroup = async () => {
-
-
-        if (group.admin.includes(profile._id)) {
+        if (group.admin.includes(currentUser._id)) {
             navigate(`/messages/chat/${group._id}/edit`)
         } else {
             alert('You cannot edit a group unless you are an admin for that group')
