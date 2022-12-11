@@ -35,10 +35,12 @@ const CreateGroup = () => {
 
     const handleAddMembers = async () => {
 
+        const currentUser = await authService.profile()
+
         if (form.username !== "") {
             let user = await usersService.findUserByUsername(form.username)
 
-            if (user !== null) {
+            if (user !== null && (currentUser._id !== user._id)) {
                 setGroupMembers([...groupMembers, user._id])
                 setSucessfulAddMember(true)
             } else {
@@ -50,16 +52,38 @@ const CreateGroup = () => {
 
     const handleAddAdmin = async () => {
 
+        let found = false
+        const currentUser = await authService.profile()
+
         if (form.admin !== "") {
+
             let validAdmin = await usersService.findUserByUsername(form.admin)
 
-            if (validAdmin !== null) {
-                setAdmins([...admins, validAdmin._id])
-                setSucessfullAddAdmin(true)
-            } else {
+            if(groupMembers.length === 0){
                 setAddAdminError(true)
             }
+            else if (groupMembers.length >= 1 && validAdmin._id !== currentUser._id) {
+
+
+                for (let i = 0; i < groupMembers.length; i++) {
+                    if (groupMembers[i] === validAdmin._id) {
+                        found = true
+                    }
+                }
+
+                if (found === true) {
+                    if (validAdmin !== null) {
+                        setAdmins([...admins, validAdmin._id])
+                        setSucessfullAddAdmin(true)
+                    } else {
+                        setAddAdminError(true)
+                    }
+                }
+            }
+        }else {
+            setAddAdminError(true)
         }
+
 
     }
 
@@ -77,10 +101,10 @@ const CreateGroup = () => {
             flag = true
         }
 
-        if (form.admin.length === 0) {
-            setEmptyAdminErrors(true)
-            flag = true
-        }
+        // if (form.admin.length === 0) {
+        //     setEmptyAdminErrors(true)
+        //     flag = true
+        // }
 
         if (form.groupName.length === 0) {
             setEmptyGroupNameErrors(true)
@@ -116,11 +140,9 @@ const CreateGroup = () => {
                 }
             }
 
-
             if(users !== null && found === false){
                 setFailedToAddMember(true)
                 flag = false
-
             }
             if(newAdmin != null && found2 ===false){
                 setFailedToAddAdmin(true)
@@ -152,6 +174,7 @@ const CreateGroup = () => {
             }
 
             let status = await groupSerivce.createGroup(currentUser._id, group)
+            console.log(status)
             navigate("/messages")
 
         } else {
@@ -316,7 +339,7 @@ const CreateGroup = () => {
             <div className='text-center' style={{color: 'red'}}>
                 {addMemberError ?
                     <label htmlFor='error' className='mt-2 mb-2' color='red'>
-                        Can not add new member (not a valid username) </label> : ""}
+                        Add member first or check username </label> : ""}
             </div>
 
             <div className='text-center' style={{color: 'red'}}>
