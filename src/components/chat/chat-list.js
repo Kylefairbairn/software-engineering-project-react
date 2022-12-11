@@ -1,9 +1,5 @@
 import ChatItem from "./chat-item";
-import {Link} from "react-router-dom";
 import * as messagesService from "../../services/messages-service"
-import {useEffect} from "react";
-import * as authService from "../../services/auth-service";
-import * as groupService from "../../services/groups-service";
 
 const ChatList = (
     {

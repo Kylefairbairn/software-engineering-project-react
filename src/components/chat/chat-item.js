@@ -1,7 +1,6 @@
 import * as userService from "../../services/users-service";
 import {useEffect, useState} from "react";
 import * as authService from "../../services/auth-service";
-import * as groupService from "../../services/groups-service";
 import {useNavigate} from "react-router-dom";
 import * as messagesService from "../../services/messages-service";
 
