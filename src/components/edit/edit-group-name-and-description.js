@@ -26,6 +26,7 @@ const EditGroupNameAndDescription = (
             description: currentGroupDesc
         }
         updateGroup(gid, updatedGroup)
+        window.history.back();
     }
 
     return (
