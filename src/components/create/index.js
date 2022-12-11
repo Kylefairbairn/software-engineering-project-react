@@ -5,6 +5,7 @@ import * as usersService from "../../services/users-service";
 import * as groupSerivce from "../../services/groups-service"
 
 import {useNavigate} from "react-router-dom";
+import * as authService from "../../services/auth-service";
 
 
 const CreateGroup = () => {
@@ -25,7 +26,7 @@ const CreateGroup = () => {
     const [addMemberError, setAddMemberError] = useState(false)
     const [addAdminError, setAddAdminError] = useState(false)
     const [dateError, setDateErrors] = useState(false)
-    const [adminError, setAdminErrors] = useState(false)
+    const [setAdminError, setSetAdminErrors] = useState(false)
     const [groupNameError, setGroupNameErrors] = useState(false)
 
 
@@ -38,31 +39,37 @@ const CreateGroup = () => {
             let user = await usersService.findUserByUsername(form.username)
 
             if (user !== null) {
+                console.log("accessing the second if")
+
+                //setGroupMembers(user._id)
+
                 const newMember = {...form}
                 setGroupMembers([...groupMembers, newMember])
             }
+            else{
+                console.log("accessing the add members ")
+                setAddMemberError(true)
+            }
+        }
 
-        }
-        else{
-            setAddMemberError(true)
-        }
     }
 
 
     const handleAddAdmin = async () => {
 
         if(form.admin !== "") {
-
             let validAdmin = await usersService.findUserByUsername(form.admin)
 
             if (validAdmin !== null) {
                 const newAdmin = {...form}
                 setAdmins([...admins, newAdmin])
             }
+            else{
+                setAddAdminError(true)
+            }
         }
-        else{
-            setAddAdminError(true)
-        }
+
+
     }
 
 
@@ -90,12 +97,12 @@ const CreateGroup = () => {
         }
 
         if (form.admin.length === 0){
-            setAdminErrors(true)
+            setSetAdminErrors(true)
             flag = true
         }
 
-        if(form.admin.length > 0 && adminError === true){
-            setAdminErrors(false)
+        if(form.admin.length > 0 && setAdminError === true){
+            setSetAdminErrors(false)
             flag = true
         }
 
@@ -169,10 +176,17 @@ const CreateGroup = () => {
     const createNewGroup = async () => {
 
         let invalidEntry = formEntryHandler()
-        await findUsers()
-        await findAdmins()
+        // await findUsers()
+        // await findAdmins()
         let user = {}
         let userId = ''
+
+        // pulling profile
+        //const profile = await authService.profile()
+        //console.log(profile)
+
+
+        console.log(groupMembers)
 
         if(allUsernames.length !== 0) {
             user = await usersService.findUserByUsername(allUsernames[0])
@@ -189,11 +203,7 @@ const CreateGroup = () => {
                 description: form.description
             }
 
-            console.log(group)
-
             await groupSerivce.createGroup(userId, group)
-
-
             navigate("/messages")
 
 
@@ -208,15 +218,13 @@ const CreateGroup = () => {
                 description: form.description
             }
 
-            console.log(group)
 
             await groupSerivce.createGroup(userId, group)
 
             navigate("/messages")
 
         }
-
-        // setCreateGroup(false)
+        setCreateGroup(false)
 
         }
 
@@ -274,7 +282,7 @@ const CreateGroup = () => {
             </div>
 
             <div className='' style={{color: 'red'}}>
-                {adminError?
+                {setAdminError?
                     <label htmlFor='error' className='mt-2 mb-2' color='red' >
                         Admins cant be empty </label>:''}
             </div>
