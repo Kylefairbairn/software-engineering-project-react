@@ -20,7 +20,7 @@ const CreateGroup = () => {
     const [groupMembers, setGroupMembers] = useState([])
     const [admins, setAdmins] = useState([])
     const [userNameError, setUserNameErrors] = useState(false)
-    const [createGroup, setCreateGroup] = useState(false)
+    const [createGroupError, setCreateGroupError] = useState(false)
     const [addMemberError, setAddMemberError] = useState(false)
     const [addAdminError, setAddAdminError] = useState(false)
     const [dateError, setDateErrors] = useState(false)
@@ -61,7 +61,7 @@ const CreateGroup = () => {
 
     }
 
-    const formEntryHandler = () => {
+    const formEmptyEntryHandler = () => {
 
         let flag = false
 
@@ -107,13 +107,26 @@ const CreateGroup = () => {
         return flag
     }
 
+
+    const validFormEntries = async () => {
+        let user = await usersService.findUserByUsername(form.username)
+        let admin = await usersService.findUserByUsername(form.admin)
+        let flag = false
+        if(user == null || admin == null){
+            flag = true
+        }
+        return flag
+    }
+
     const createNewGroup = async () => {
 
-        let invalidEntry = formEntryHandler()
+        let emptyFormCheck = formEmptyEntryHandler()
+        let validFormCheck = validFormEntries()
+
 
         const currentUser = await authService.profile()
 
-        if(currentUser !== null && invalidEntry === false) {
+        if(currentUser !== null && emptyFormCheck === false &&  validFormCheck === false) {
 
             const group = {
                 members: groupMembers,
@@ -125,7 +138,12 @@ const CreateGroup = () => {
 
             let status = await groupSerivce.createGroup(currentUser._id, group)
             //     navigate("/messages")
+
             console.log(status)
+        }
+        else{
+            setCreateGroupError(true)
+            //alert("invalid group")
         }
     }
 
@@ -243,14 +261,14 @@ const CreateGroup = () => {
                         Can not add new member (not a valid username) </label>:''}
             </div>
 
-            <div className='text-center' style={{color: 'green'}}>
-                {addMemberError?
-                    <label htmlFor='error' className='mt-2 mb-2'>
-                        Can not add new member (not a valid username) </label>:''}
-            </div>
+            {/*<div className='text-center' style={{color: 'green'}}>*/}
+            {/*    {addMemberError?*/}
+            {/*        <label htmlFor='error' className='mt-2 mb-2'>*/}
+            {/*            Can not add new member (not a valid username) </label>:''}*/}
+            {/*</div>*/}
 
-            <div className='' style={{color: 'red'}}>
-                {createGroup?
+            <div className='text-center' style={{color: 'red'}}>
+                {createGroupError?
                     <label htmlFor='error' className='mt-2 mb-2' color='red' >
                         Error when creating group! Try Again </label>:''}
             </div>
