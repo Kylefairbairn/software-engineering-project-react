@@ -12,9 +12,11 @@ import Notifications from "../notifications";
 import Messages from "../messages";
 import Lists from "../lists";
 import More from "../more";
-import {Login} from "../profile/login";
+import Login from "../profile/login";
 import EditGroup from "../edit";
 import CreateGroup from "../create";
+import Chat from "../chat";
+import Signup from "../profile/signup";
 
 function Tuiter () {
   return(
@@ -28,13 +30,15 @@ function Tuiter () {
             <Routes>
               <Route path="/" element={<Home/>}/>
               <Route path="/login" element={<Login/>}/>
+              <Route path="/signup" element={<Signup/>}/>
               <Route path="/tuiter" element={<Home/>}/>
               <Route path="/tuiter/:uid" element={<Home/>}/>
               <Route path="/home" element={<Home/>}/>
               <Route path="/home/:uid" element={<Home/>}/>
               <Route path="/explore" element={<Explore/>}/>
               <Route path="/notifications" element={<Notifications/>}/>
-              <Route path="/messages/chat/:gid" element={<Messages/>}/>
+              <Route path="/messages/*" element={<Messages/>}/>
+              <Route path="/messages/chat/:gid" element={<Chat/>}/>
               <Route path="/messages/chat/:gid/edit" element={<EditGroup/>}/>
               <Route path="messages/create" element={<CreateGroup/>}/>
               <Route path="/bookmarks" element={<Bookmarks/>}/>

@@ -1,44 +1,61 @@
 import React, {useEffect, useState} from "react";
 import * as groupService from "../../services/groups-service";
 import * as usersService from "../../services/users-service";
+import * as authService from "../../services/auth-service"
 import GroupsList from "./group-list";
+import {useNavigate, Link} from "react-router-dom";
 
 const Groups = () => {
+    const navigate = useNavigate()
+    const [currentUser, setCurrentUser] = useState({})
     const [groups, setGroups] = useState([])
-    const [user, setUser] = useState()
+    const [otherUser, setOtherUser] = useState({})
     const [username, setUsername] = useState('')
 
     const findGroups = () =>
-        groupService.findGroupsForUser('633c41de89045f21193ea004')
+        groupService.findGroupsForUser(currentUser._id)
             .then(groups => setGroups(groups))
 
     const findCommonGroups = async (ouid) =>
-        await groupService.findAllCommonGroups('633c41de89045f21193ea004', ouid)
+        await groupService.findAllCommonGroups(currentUser._id, ouid)
             .then(groups => setGroups(groups))
 
     const findUserByUsername = async (name) =>
         await usersService.findUserByUsername(name)
-            .then(user => setUser(user))
+            .then(user => setOtherUser(user))
             .catch(e => alert(e))
 
     const searchHandler = async () => {
-        if (username === '' || username === undefined) {
+        if (!username) {
             return await findGroups()
         } else {
             await findUserByUsername(username)
-            return await findCommonGroups(user._id)
+            return await findCommonGroups(otherUser._id)
         }
     }
 
-    useEffect(findGroups, [])
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const profile = await authService.profile()
+                setCurrentUser(profile)
+                const currentGroups = await groupService.findGroupsForUser(profile._id)
+                setGroups(currentGroups)
+            } catch (e) {
+                navigate('/login')
+            }
+        }
+        fetchData()
+    }, [])
     return(
         <div className={'pt-2'}>
             <div className={'ps-2 row'}>
                 <div className={'col'}>
-                    {/*TODO Add create group functionality*/}
-                    <button className={'btn btn-primary'}>
-                        Create Group
-                    </button>
+                    <Link to={'/messages/create'}>
+                        <button className={'btn btn-primary'}>
+                            Create Group
+                        </button>
+                    </Link>
                 </div>
                 <div className={'col'}>
                     <div className="input-group">
