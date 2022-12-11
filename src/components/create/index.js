@@ -5,6 +5,7 @@ import * as groupSerivce from "../../services/groups-service"
 
 import {useNavigate} from "react-router-dom";
 import * as authService from "../../services/auth-service";
+import MemberListNoButton from "../chat/member-list-noButton";
 
 
 const CreateGroup = () => {
@@ -205,6 +206,9 @@ const CreateGroup = () => {
                     onChange={(e) => setForm({...form, username: e.target.value})}
 
                 />
+                <div>
+                    <MemberListNoButton group={form} memberList={groupMembers}/>
+                </div>
             </div>
 
             <div className='' style={{color: 'red'}}>
@@ -240,6 +244,9 @@ const CreateGroup = () => {
                     placeholder="admin"
                     onChange={(e) => setForm({...form, admin: e.target.value})}
                 />
+                <div>
+                    <MemberListNoButton group={form} memberList={admins}/>
+                </div>
             </div>
 
             <div className='' style={{color: 'red'}}>
