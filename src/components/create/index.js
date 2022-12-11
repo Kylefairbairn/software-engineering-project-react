@@ -111,8 +111,9 @@ const CreateGroup = () => {
     const validFormEntries = async () => {
         let user = await usersService.findUserByUsername(form.username)
         let admin = await usersService.findUserByUsername(form.admin)
+
         let flag = false
-        if(user == null || admin == null){
+        if(user === null || admin === null){
             flag = true
         }
         return flag
@@ -121,10 +122,12 @@ const CreateGroup = () => {
     const createNewGroup = async () => {
 
         let emptyFormCheck = formEmptyEntryHandler()
-        let validFormCheck = validFormEntries()
+        let validFormCheck =  await validFormEntries()
 
 
         const currentUser = await authService.profile()
+
+        console.log(validFormCheck)
 
         if(currentUser !== null && emptyFormCheck === false &&  validFormCheck === false) {
 
@@ -137,7 +140,7 @@ const CreateGroup = () => {
             }
 
             let status = await groupSerivce.createGroup(currentUser._id, group)
-            //     navigate("/messages")
+            navigate("/messages")
 
             console.log(status)
         }
