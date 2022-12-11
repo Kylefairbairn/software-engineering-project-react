@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Alert, Form, FormControl} from "react-bootstrap";
-import AddMemberModal from "../create/AddMemberModal"
+import {Form} from "react-bootstrap";
 import * as usersService from "../../services/users-service";
 import * as groupSerivce from "../../services/groups-service"
 
@@ -9,8 +8,6 @@ import * as authService from "../../services/auth-service";
 
 
 const CreateGroup = () => {
-
-    // figure out how to create a modal or notfication if a member/admin/group has been added/created
 
     let navigate = useNavigate()
 
@@ -47,7 +44,6 @@ const CreateGroup = () => {
                 setAddMemberError(true)
             }
         }
-        //setAddMemberError(true)
     }
 
 
@@ -144,10 +140,6 @@ const CreateGroup = () => {
         let validCheck = await validFormCheckOneEntry()
         const currentUser = await authService.profile()
 
-        console.log(validCheck)
-
-        console.log(groupMembers)
-
         if (currentUser !== null && emptyFormCheck === false && validCheck === true) {
 
             const group = {
@@ -161,7 +153,6 @@ const CreateGroup = () => {
             let status = await groupSerivce.createGroup(currentUser._id, group)
             navigate("/messages")
 
-            console.log(status)
         } else {
             setCreateGroupError(true)
         }
